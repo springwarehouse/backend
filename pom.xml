@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.springcloud.demo</groupId>
+    <artifactId>backend</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <!-- 添加子工程 -->
+    <modules>
+        <module>server</module>
+    </modules>
+
+    <!-- '<packaging>pom</packaging>'指定了Maven项目的打包类型。在这种情况下，'pom'代表“Project Object Model”，表明Maven项目是一个父项目或聚合项目。 -->
+    <!-- POM打包类型意味着这个Maven项目不会生成像JAR或WAR文件这样的可部署文件。相反，它作为一个容器，包含了配置信息、依赖关系等。 -->
+    <!-- 聚合项目通常用于管理多模块项目，它们组织多个子项目（模块）并定义通用的配置和依赖关系。这些项目有助于保持模块之间的一致性，并更有效地管理依赖项。 -->
+    <packaging>pom</packaging>
+
+
+    <!-- '<properties>' 元素用于定义 Maven 构建中可重用的属性。这些属性可以在整个 'pom.xml' 文件中引用，从而使配置更加灵活和可维护。 -->
+    <!-- 在创建 Spring Cloud 的父子模块时，'<properties>' 元素通常用于定义项目的一些通用属性，例如版本号、依赖库的版本等。 -->
+    <properties>
+        <supervoltage.version>1.0.0</supervoltage.version>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <!-- spring 相关版本号, 需要保持匹配 -->
+        <!-- https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E -->
+        <spring-boot.version>2.6.13</spring-boot.version>
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <lombok.version>1.18.24</lombok.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <mysql.version>8.0.33</mysql.version>
+        <druid.version>1.2.19</druid.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <guava.version>33.0.0-jre</guava.version>
+        <stateless4j.version>2.6.0</stateless4j.version>
+    </properties>
+
+
+    <!-- '<dependencyManagement>' 元素是 Maven POM 文件中的一个重要部分，用于集中管理依赖项的版本。 -->
+    <!-- 它允许您在父项目中指定依赖项的版本,包括它们的 'groupId'、'artifactId' 和 'version'。，然后在子项目中引用这些依赖项而无需指定版本号。 -->
+    <!-- 这样可以确保在多个子项目中使用相同版本的依赖项，从而提高了项目的一致性和可维护性。 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringCloud 微服务 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringCloud Alibaba 微服务 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringBoot 依赖配置 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Hutool是一个小而全的Java工具类库 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!-- lombok 自动代码生成 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- mapstruct 处理 DO,VO,DTO 等转换 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
+
+            <!-- mysql 驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <!-- mybatis-plus ORM -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter-test</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- Google Guava 是由 Google 提供的一个 Java 标准库扩展，提供了许多实用的工具类和方法，用于简化 Java 编程 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <!-- Stateless4j 是一个轻量级的 Java 状态机库，用于管理对象的状态转换。 -->
+            <dependency>
+                <groupId>com.github.stateless4j</groupId>
+                <artifactId>stateless4j</artifactId>
+                <version>${stateless4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- <build> 元素在 Maven 的 POM 文件中扮演着非常重要的角色，它用于配置 Maven 构建过程中的各种行为和操作。-->
+    <!-- 您可以在 <build> 元素中配置编译器插件、资源过滤、测试运行器、构建输出目录等等。-->
+    <build>
+        <!-- <pluginManagement> 元素是 Maven POM 文件中的一个重要部分，用于集中管理插件（plugins）的配置信息。 -->
+        <!-- 它通常在父项目的 POM 文件中使用，允许在子项目中引用相同的插件配置而无需重复定义。 -->
+        <!-- 需要注意的是，<pluginManagement> 元素中声明的插件配置只是一种模板，不会直接影响构建过程。 -->
+        <!-- 子项目需要显式地引用父项目中定义的插件配置，才能实际应用到构建过程中。 -->
+        <pluginManagement>
+            <!-- <plugins> 元素是 <build> 元素的一个子元素，用于指定项目中所使用的插件。-->
+            <!-- 在 <plugins> 元素中，您可以列出项目中使用的各种插件，例如编译器插件、资源插件、部署插件等。-->
+            <!-- 每个插件都可以有自己的配置信息，例如版本、参数等。 -->
+            <plugins>
+                <!-- 定义父项目中的插件配置 -->
+                <!-- maven-surefire-plugin 插件，用于运行单元测试。 -->
+                <!-- 注意，需要使用 3.0.X+，因为要支持 Junit 5 版本 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <!-- maven-compiler-plugin 插件，解决 Lombok + MapStruct 组合 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${org.mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-configuration-processor</artifactId>
+                                <version>${spring-boot.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- <repositories> 元素用于在 Maven 项目中指定仓库（Repository）的配置。 -->
+    <!-- Maven 仓库是用于存储和获取项目依赖项（dependencies）的地方。 -->
+    <!-- 在 <repositories> 元素中，您可以指定项目需要使用的外部仓库的位置和相关信息。 -->
+    <!-- 需要注意的是，如果您的项目依赖项可以在 Maven 中央仓库或其他公共仓库中找到，通常不需要显式地定义 <repositories> 元素。 -->
+    <!-- Maven 默认会搜索中央仓库以及其他默认配置的仓库来查找依赖项。 -->
+    <!-- 只有当您需要使用其他非默认仓库时才需要定义 <repositories> 元素。 -->
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <!-- <pluginRepositories> 元素类似于 <repositories> 元素，但是专门用于配置 Maven 插件仓库的位置和相关信息。 -->
+    <!-- 在 Maven 构建过程中，插件仓库用于存储和获取项目所需的插件。 -->
+    <!-- 与 <repositories> 元素类似，如果您的项目所需的插件可以在 Maven 中央仓库或其他公共仓库中找到，通常不需要显式地定义 <pluginRepositories> 元素。 -->
+    <!-- Maven 默认会搜索中央仓库以及其他默认配置的插件仓库来查找所需的插件。 -->
+    <!-- 只有当您需要使用其他非默认插件仓库时才需要定义 <pluginRepositories> 元素。 -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun</id>
+            <name>aliyun nexus</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
