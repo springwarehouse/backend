@@ -1,0 +1,45 @@
+server:
+  port: 19300
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/super_voltage?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: root
+
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: druid
+        login-password: DFF46C4173F616195D205C65A939726C
+        #allow:
+      web-stat-filter:
+        enabled: true
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 200
+          merge-sql: true
+        slf4j:
+          enabled: true
+
+redis:
+  host: localhost
+  port: 6379
+  password:
+  database: 11
+
+jackson:
+  time-zone: GMT+8
+
+logging:
+  level:
+    com.springcloud.demo.server: debug
+    #druid.sql: debug
