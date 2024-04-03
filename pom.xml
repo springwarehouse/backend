@@ -41,6 +41,10 @@
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <guava.version>33.0.0-jre</guava.version>
         <stateless4j.version>2.6.0</stateless4j.version>
+        <netty.version>4.1.107.Final</netty.version>
+        <!-- JDK8 只能使用 mockito 4, 4.11.0 需要 bytebuddy 1.12.19 -->
+        <mockito.version>4.11.0</mockito.version>
+        <bytebuddy.version>1.12.19</bytebuddy.version>     
     </properties>
 
 
@@ -129,6 +133,39 @@
                 <artifactId>stateless4j</artifactId>
                 <version>${stateless4j.version}</version>
             </dependency>
+            <!-- 网络编程框架 -->     
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- 单元测试 使用最新的 mockito, pom里不用显示的写出 dependency -->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-inline</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${bytebuddy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy-agent</artifactId>
+                <version>${bytebuddy.version}</version>
+            </dependency>     
         </dependencies>
     </dependencyManagement>
 
