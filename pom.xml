@@ -44,7 +44,7 @@
         <netty.version>4.1.107.Final</netty.version>
         <!-- JDK8 只能使用 mockito 4, 4.11.0 需要 bytebuddy 1.12.19 -->
         <mockito.version>4.11.0</mockito.version>
-        <bytebuddy.version>1.12.19</bytebuddy.version>     
+        <bytebuddy.version>1.12.19</bytebuddy.version>
     </properties>
 
 
@@ -133,7 +133,7 @@
                 <artifactId>stateless4j</artifactId>
                 <version>${stateless4j.version}</version>
             </dependency>
-            <!-- 网络编程框架 -->     
+            <!-- 网络编程框架 -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
@@ -165,7 +165,7 @@
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy-agent</artifactId>
                 <version>${bytebuddy.version}</version>
-            </dependency>     
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
