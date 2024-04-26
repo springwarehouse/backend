@@ -63,6 +63,7 @@ public class WSHandler extends TextWebSocketHandler {
             if (wsMessage.getType() == null) {
                 throw new RuntimeException("message type cannot be null");
             }
+            // 处理消息
             wsService.handleMessage(session, wsMessage);
         } catch (Exception e) {
             log.error("handleMessage exception", e);

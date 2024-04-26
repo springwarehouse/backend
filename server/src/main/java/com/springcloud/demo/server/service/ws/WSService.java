@@ -1,11 +1,16 @@
 package com.springcloud.demo.server.service.ws;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springcloud.demo.server.core.exception.WSException;
+import com.springcloud.demo.server.data.constant.WSRequestType;
 import com.springcloud.demo.server.data.ws.WSMessage;
+import com.springcloud.demo.server.data.ws.WSResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,8 +49,45 @@ public class WSService implements InitializingBean {
         sessions.remove(session.getId());
     }
 
+    /**
+     * 处理消息
+     *
+     * @param session
+     * @param message
+     * @throws Exception
+     */
     public void handleMessage(WebSocketSession session, WSMessage message) throws Exception {
         log.info("handleMessage");
+        if ((message.getType()).equals(WSRequestType.HEARTBEAT)) {
+            // 心跳消息
+            log.info("heartbeat message: {}", message);
+            // 处理心跳
+            handleHeartBeat(session, message);
+        } else if ((message.getType()).equals(WSRequestType.REQUEST)) {
+            // 请求消息
+            log.info("request message: {}", message);
+            // 获取请求路由
+            String route = message.getRoute();
+            // 校验请求路由
+            if (!StringUtils.hasText(route)) {
+                throw new WSException("unknown request route: " + route);
+            }
+        } else {
+            throw new WSException("unknown type: " + message.getType());
+
+        }
+    }
+
+    /**
+     * 处理心跳
+     *
+     * @param session
+     * @param message
+     */
+    private void handleHeartBeat(WebSocketSession session, WSMessage message) throws Exception {
+        log.info("handleHeartbeat");
+        // 返回心跳
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(WSResponse.heartbeat())));
     }
 
     @Override
