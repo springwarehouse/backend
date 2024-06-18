@@ -1,10 +1,14 @@
 package com.springcloud.demo.server.event.core;
 
+import com.google.common.eventbus.DeadEvent;
+import com.google.common.eventbus.Subscribe;
+import com.google.common.util.concurrent.ServiceManager;
 import io.netty.util.HashedWheelTimer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,11 +22,39 @@ import java.util.List;
 @Component
 public class EventCenter implements InitializingBean, DisposableBean {
 
-    private final HashedWheelTimer timer = new HashedWheelTimer(r -> new Thread(r, "MessageExecutor-timer"));
+    private final HashedWheelTimer timer = new HashedWheelTimer(r -> new Thread(r, "EventExecutor-timer"));
 
     private static final int DEFAULT_EXECUTOR_COUNT = 4;
 
+    private final ApplicationContext applicationContext;
+
+    private ServiceManager executorManager;
+
     private List<EventExecutor> executors;
+
+    /**
+     * 保证同一个 agent 的任务必定在同一个线程中执行
+     */
+    public void submitTask(BaseEventAgent agent, Runnable runnable) {
+        int index = agent.hashCode() % DEFAULT_EXECUTOR_COUNT;
+        if (index < 0) {
+            index += DEFAULT_EXECUTOR_COUNT;
+        }
+        executors.get(index).submitTask(runnable);
+    }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public HashedWheelTimer getTimer() {
+        return timer;
+    }
+
+    @Subscribe
+    private void handleDeadEvent(DeadEvent event) {
+        log.warn("dead event: {}", event);
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -44,4 +76,6 @@ public class EventCenter implements InitializingBean, DisposableBean {
     public void destroy() throws Exception {
         log.info("MessageCenter destroy");
     }
+
+    private void loadAllAgents() {}
 }
