@@ -115,6 +115,12 @@
                 <version>${mybatis-plus.version}</version>
                 <scope>test</scope>
             </dependency>
+            <!-- 切换数据源 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource.version}</version>
+            </dependency>     
             <!-- 数据库连接池 -->
             <dependency>
                 <groupId>com.alibaba</groupId>
