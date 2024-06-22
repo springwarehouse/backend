@@ -1,7 +1,0 @@
-package com.springcloud.demo.server.event.core;
-
-import java.util.List;
-
-public interface EventFactory {
-    List<BaseEventAgent> getWarningAgents(EventCenter warningCenter);
-}
