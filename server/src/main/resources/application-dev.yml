@@ -41,5 +41,5 @@ jackson:
 
 logging:
   level:
-    com.springcloud.demo.server: debug
+    com.example.demo.server: debug
     #druid.sql: debug
