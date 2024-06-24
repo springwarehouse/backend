@@ -53,6 +53,7 @@ public class TemplateAgent extends BaseEventAgent {
 
     /**
      * 当状态机进入"B"状态时,执行onEntryB
+     *
      * @param transition
      */
     private void onEntryB(Transition<TemplateAgent.State, TemplateAgent.Trigger> transition) {
@@ -62,7 +63,6 @@ public class TemplateAgent extends BaseEventAgent {
     }
 
     /**
-     *
      * @param transition
      */
     private void onStopB(Transition<TemplateAgent.State, TemplateAgent.Trigger> transition) {
@@ -127,7 +127,7 @@ public class TemplateAgent extends BaseEventAgent {
             @Override
             public void transition(TemplateAgent.Trigger trigger, TemplateAgent.State source, TemplateAgent.State destination) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Transformer({}): {} -> {} - {}", templateInfo.getTemplateId(), source, destination, trigger);
+                    log.debug("Template({}): {} -> {} - {}", templateInfo.getTemplateId(), source, destination, trigger);
                 }
             }
         });
