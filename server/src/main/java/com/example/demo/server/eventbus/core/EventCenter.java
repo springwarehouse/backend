@@ -63,22 +63,27 @@ public class EventCenter implements InitializingBean, DisposableBean {
         log.warn("dead event: {}", event);
     }
 
+    /**
+     * 初始化操作,当Spring容器实例化Bean并设置完所有的属性后，会自动调用afterPropertiesSet()方法
+     * @throws Exception
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         // handleDeadEvent
-        log.info("MessageCenter init");
+        log.info("EventCenter init");
         EventBusCenter.register(this);
         timer.start();
 
-        // 创建所有执行器
+        // 创建一个执行器
         this.executors = new ArrayList<>(DEFAULT_EXECUTOR_COUNT);
 
         for (int i = 0; i < DEFAULT_EXECUTOR_COUNT; i++) {
             this.executors.add(new EventExecutor(i));
         }
         this.executorManager = new ServiceManager(executors);
+        // 启动所有被管理的服务，只有当所有服务的状态为NEW时，调用此方法才不会抛异常
         this.executorManager.startAsync();
-        // 等待所有 executor 启动完成
+        // 等待所有 executor 启动完成(所有服务的状态都为RUNNING)
         this.executorManager.awaitHealthy();
 
         // 加载所有 agent
@@ -113,7 +118,7 @@ public class EventCenter implements InitializingBean, DisposableBean {
     private void loadAllAgents() {
         List<BaseEventAgent> allAgents = new ArrayList<>();
         eventFactories.forEach(factory -> {
-            List<BaseEventAgent> agents = factory.getWarningAgents(this);
+            List<BaseEventAgent> agents = factory.getEventAgents(this);
             if (CollectionUtils.isEmpty(agents)) {
                 return;
             }

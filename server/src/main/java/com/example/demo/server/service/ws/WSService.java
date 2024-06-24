@@ -1,5 +1,6 @@
 package com.example.demo.server.service.ws;
 
+import com.example.demo.server.eventbus.core.EventBusCenter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.demo.server.core.exception.WSException;
 import com.example.demo.server.data.constant.WSRequestType;
@@ -30,6 +31,10 @@ public class WSService implements InitializingBean {
     // 新连接 session id -> session
     private final ConcurrentHashMap<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
+    private final TemplateHandler templateHandler;
+
+    private final MessageHandler messageHandler;
+
     /**
      * 记录用户的连接标识，便于后面发信息，这里我是将id记录在Map集合中
      *
@@ -49,7 +54,9 @@ public class WSService implements InitializingBean {
     public void removeConnection(WebSocketSession session) {
         log.info("removeConnection");
         // 移除会话
+        // TODO: 分开后可以移除
         sessions.remove(session.getId());
+        templateHandler.removeSession(session);
     }
 
     /**
@@ -76,6 +83,13 @@ public class WSService implements InitializingBean {
             if (!StringUtils.hasText(route)) {
                 throw new WSException("unknown request route: " + route);
             }
+            if (route.startsWith(TemplateHandler.Prefix)) {
+                templateHandler.handle(this, session, message);
+            } else if (route.startsWith(MessageHandler.Prefix)) {
+                messageHandler.handle(this, session, message);
+            } else {
+                throw new WSException("unknown request route: " + route);
+            }
         } else {
             throw new WSException("unknown type: " + message.getType());
 
@@ -97,5 +111,12 @@ public class WSService implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         log.info("WSService init");
+        EventBusCenter.register(templateHandler);
+        EventBusCenter.register(messageHandler);
+    }
+
+    public <T> void responseData(WebSocketSession session, Long id, String route, T data) throws Exception {
+        WSResponse<T> response = WSResponse.response(id, route, data);
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(response)));
     }
 }
