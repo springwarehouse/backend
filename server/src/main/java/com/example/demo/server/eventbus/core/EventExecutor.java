@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 事件执行
+ * 事件执行器
  */
 @Slf4j
 public class EventExecutor extends AbstractExecutionThreadService {
@@ -44,7 +44,7 @@ public class EventExecutor extends AbstractExecutionThreadService {
                 counter.incrementAndGet();
                 action.run();
             } catch (Exception e) {
-                log.error("执行 WarningExecutor 时发生异常", e);
+                log.error("执行 EventExecutor 时发生异常", e);
             }
         }
         log.info("stop executor: {}", serviceName());

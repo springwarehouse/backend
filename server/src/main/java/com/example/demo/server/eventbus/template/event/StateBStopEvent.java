@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import java.util.Date;
 
 /**
- * 结束事件
+ * 结束事件B
  */
 @Data
 @RequiredArgsConstructor
-public class TemplateStopEvent implements Event {
+public class StateBStopEvent implements Event {
     private final String templateId;
 
     private final Date startTime = new Date();

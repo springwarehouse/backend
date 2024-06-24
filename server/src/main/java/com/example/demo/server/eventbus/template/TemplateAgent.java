@@ -1,12 +1,17 @@
-package com.example.demo.server.eventbus.event;
+package com.example.demo.server.eventbus.template;
 
+import com.example.demo.server.eventbus.common.event.ReceiveEvent;
+import com.example.demo.server.eventbus.data.TemplateInfo;
+import com.example.demo.server.eventbus.template.event.ChangeEvent;
+import com.example.demo.server.eventbus.template.event.StateBStartEvent;
+import com.example.demo.server.eventbus.template.event.StateBStopEvent;
+import com.example.demo.server.eventbus.template.event.StateCStartEvent;
 import com.github.oxo42.stateless4j.StateMachine;
 import com.github.oxo42.stateless4j.delegates.Trace;
 import com.github.oxo42.stateless4j.transitions.Transition;
 import com.google.common.eventbus.Subscribe;
 import com.example.demo.server.eventbus.core.BaseEventAgent;
 import com.example.demo.server.eventbus.core.EventCenter;
-import com.example.demo.server.eventbus.data.Variable;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,36 +40,49 @@ public class TemplateAgent extends BaseEventAgent {
         EVENT_C_STOP
     }
 
+    private final TemplateInfo templateInfo;
+
     // 定义状态机
     private final StateMachine<TemplateAgent.State, TemplateAgent.Trigger> stateMachine;
 
-    public TemplateAgent(EventCenter eventCenter) {
+    public TemplateAgent(EventCenter eventCenter, TemplateInfo templateInfo) {
         super(eventCenter);
         this.stateMachine = createStateMachine();
+        this.templateInfo = templateInfo;
     }
 
+    /**
+     * 当状态机进入"B"状态时,执行onEntryB
+     * @param transition
+     */
     private void onEntryB(Transition<TemplateAgent.State, TemplateAgent.Trigger> transition) {
         if (transition.getSource() == TemplateAgent.State.STATE_A) {
-            //postEvent(new TransformerOilTemperatureStartWarningEvent(transformerInfo.getTransformerId()));
+            postEvent(new StateBStartEvent(templateInfo.getTemplateId()));
         }
-        //checkHistoryInWarning();
     }
 
+    /**
+     *
+     * @param transition
+     */
     private void onStopB(Transition<TemplateAgent.State, TemplateAgent.Trigger> transition) {
         if (transition.getDestination() == TemplateAgent.State.STATE_A) {
-            //postEvent(new TransformerOilTemperatureStopWarningEvent(transformerInfo.getTransformerId()));
+            postEvent(new StateBStopEvent(templateInfo.getTemplateId()));
         }
-        //if (temperatureTimer.isRunning()) {
-        //temperatureTimer.stop();
-        //}
     }
 
+    /**
+     *
+     */
     private void onEntryC() {
-        //postEvent(new TransformerOilTemperatureStartAlarmEvent(transformerInfo.getTransformerId()));
+        postEvent(new StateCStartEvent(templateInfo.getTemplateId()));
     }
 
+    /**
+     *
+     */
     private void onExitC() {
-        //postEvent(new TransformerOilTemperatureStopAlarmEvent(transformerInfo.getTransformerId()));
+        postEvent(new StateCStartEvent(templateInfo.getTemplateId()));
     }
 
     /**
@@ -109,7 +127,7 @@ public class TemplateAgent extends BaseEventAgent {
             @Override
             public void transition(TemplateAgent.Trigger trigger, TemplateAgent.State source, TemplateAgent.State destination) {
                 if (log.isDebugEnabled()) {
-                    //log.debug("Transformer({}): {} -> {} - {}", transformerInfo.getTransformerId(), source, destination, trigger);
+                    log.debug("Transformer({}): {} -> {} - {}", templateInfo.getTemplateId(), source, destination, trigger);
                 }
             }
         });
@@ -117,16 +135,54 @@ public class TemplateAgent extends BaseEventAgent {
         return stateMachine;
     }
 
+    // 触发
+    private void triggerChange() {
+        switch (stateMachine.getState()) {
+            case STATE_A:
+                // 处理状态机A的逻辑
+                // ...
+                if (true) { // 满足某个条件
+                    /* 触发状态转换条件, 状态跳转 */
+                    stateMachine.fire(TemplateAgent.Trigger.EVENT_B_START);
+                }
+                break;
+            case STATE_B:
+                if (!true) {
+                    stateMachine.fire(TemplateAgent.Trigger.EVENT_B_STOP);
+                    break;
+                }
+                if (true) {
+                    stateMachine.fire(TemplateAgent.Trigger.EVENT_C_START);
+                    break;
+                }
+                break;
+            case STATE_C:
+                if (!true) {
+                    // ToDo
+                    stateMachine.fire(TemplateAgent.Trigger.EVENT_C_STOP);
+                    break;
+                }
+                break;
+        }
+    }
+
     /**
      * 只有通过@Subscribe注解的方法才会被注册进EventBus
      * 而且方法有且只能有1个参数
      *
-     * @param variable 变量
+     * @param event 接收事件
      */
     @Subscribe
-    public void handleEvent(Variable variable) {
+    public void onReceiveHandleEvent(ReceiveEvent event) {
         // Todo
         execute(() -> {
+            if (!event.getTemplateId().equals(templateInfo.getTemplateId())) {
+                return;
+            }
+            // 发布事件
+            postEvent(new ChangeEvent(event.getTemplateId(), 0.0));
+
+            triggerChange();
         });
     }
 }

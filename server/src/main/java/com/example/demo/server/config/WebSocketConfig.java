@@ -1,7 +1,7 @@
 package com.example.demo.server.config;
 
 import com.example.demo.server.config.properties.WebSocketProperty;
-import com.example.demo.server.core.handler.WSHandler;
+import com.example.demo.server.controller.WSHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
