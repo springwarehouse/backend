@@ -12,6 +12,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+/**
+ * 要使用WebSocket的相关功能,需要继承TextWebSocketHandler类来实现我们自己的WSHandler类
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -21,6 +24,11 @@ public class WSHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * 在WebSocket连接成功建立后被自动调用
+     * @param session
+     * @throws Exception
+     */
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         if (log.isTraceEnabled()) {
             log.trace("afterConnectionEstablished: id={}, uri={}", session.getId(), session.getUri());
@@ -30,10 +38,17 @@ public class WSHandler extends TextWebSocketHandler {
         wsService.addConnection(session);
     }
 
+    /**
+     * 在WebSocket接收到文本消息时被自动调用。常常用于收到的消息进行转发
+     * @param session
+     * @param message
+     * @throws Exception
+     */
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         if (log.isTraceEnabled()) {
             log.trace("handleTextMessage: id={}, payload={}", session.getId(), message.getPayload());
         }
+        // 接收客户端的消息 message.getPayload()消息体
         String payload = message.getPayload();
         try {
             WSMessage wsMessage = objectMapper.readValue(payload, WSMessage.class);
@@ -57,6 +72,12 @@ public class WSHandler extends TextWebSocketHandler {
         }
     }
 
+    /**
+     * 在连接出现异常时被自动调用
+     * @param session
+     * @param exception
+     * @throws Exception
+     */
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
         log.error("handleTransportError: {}", session, exception);
         try {
@@ -66,6 +87,12 @@ public class WSHandler extends TextWebSocketHandler {
         }
     }
 
+    /**
+     * 在连接正常关闭后被自动调用
+     * @param session
+     * @param status
+     * @throws Exception
+     */
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         if (log.isTraceEnabled()) {
             log.trace("afterConnectionClosed: id={}, status={}", session.getId(), status);

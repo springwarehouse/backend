@@ -44,6 +44,7 @@ public class WSService implements InitializingBean {
         log.info("addConnection");
         // 添加会话
         sessions.put(session.getId(), session);
+        messageHandler.handle(this, session);
     }
 
     /**
@@ -57,6 +58,7 @@ public class WSService implements InitializingBean {
         // TODO: 分开后可以移除
         sessions.remove(session.getId());
         templateHandler.removeSession(session);
+        messageHandler.removeSession(session);
     }
 
     /**
@@ -85,8 +87,6 @@ public class WSService implements InitializingBean {
             }
             if (route.startsWith(TemplateHandler.Prefix)) {
                 templateHandler.handle(this, session, message);
-            } else if (route.startsWith(MessageHandler.Prefix)) {
-                messageHandler.handle(this, session, message);
             } else {
                 throw new WSException("unknown request route: " + route);
             }
