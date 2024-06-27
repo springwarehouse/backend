@@ -3,7 +3,6 @@ package com.example.demo.server.controller;
 import com.example.demo.server.core.result.Result;
 import com.example.demo.server.eventbus.common.event.ReceiveMessage;
 import com.example.demo.server.eventbus.core.EventBusCenter;
-import com.example.demo.server.eventbus.message.event.MessageEvent;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +25,6 @@ public class TestController {
     @PostMapping("/sendData")
     public Result<String> onSendData(@RequestBody ReqVO req) {
         EventBusCenter.post(new ReceiveMessage(req.getId(),req.getMessage()));
-        return Result.success("ok");
-    }
-
-    @PostMapping("/sendData1")
-    public Result<String> onSendData1(@RequestBody ReqVO req) {
-        EventBusCenter.post(new MessageEvent(req.getId(),req.getMessage()));
         return Result.success("ok");
     }
 }

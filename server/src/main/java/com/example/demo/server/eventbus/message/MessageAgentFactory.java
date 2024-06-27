@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -15,6 +16,8 @@ import java.util.List;
 public class MessageAgentFactory implements EventFactory {
     @Override
     public List<BaseEventAgent> getEventAgents(EventCenter eventCenter) {
-        return null;
+        List<BaseEventAgent> agents = new ArrayList<>();
+        agents.add(new MessageAgent(eventCenter));
+        return agents;
     }
 }
