@@ -38,7 +38,7 @@ public class WSService implements InitializingBean {
     /**
      * 记录用户的连接标识，便于后面发信息，这里我是将id记录在Map集合中
      *
-     * @param session
+     * @param session1
      */
     public void addConnection(WebSocketSession session) {
         log.info("addConnection");
