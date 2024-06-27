@@ -19,11 +19,11 @@ public class TemplateAgentFactory implements EventFactory {
     @Override
     public List<BaseEventAgent> getEventAgents(EventCenter eventCenter) {
         List<String> list = new ArrayList();
-        list.add("template1");
+        list.add("template");
         return list.stream().map((item) -> {
             TemplateInfo templateInfo = new TemplateInfo();
             templateInfo.setTemplateId(item);
-            return  new TemplateAgent(eventCenter, templateInfo);
+            return new TemplateAgent(eventCenter, templateInfo);
         }).collect(Collectors.toList());
     }
 }
