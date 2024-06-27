@@ -22,9 +22,9 @@ public class TestController {
         private String message;
     }
 
-    @PostMapping("/sendData")
+    @PostMapping("/sendMessage")
     public Result<String> onSendData(@RequestBody ReqVO req) {
-        EventBusCenter.post(new ReceiveMessage(req.getId(),req.getMessage()));
+        EventBusCenter.post(new ReceiveMessage(req.getId(), req.getMessage()));
         return Result.success("ok");
     }
 }
