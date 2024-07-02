@@ -10,6 +10,10 @@
     <!-- 添加子工程 -->
     <modules>
         <module>server</module>
+        <module>eureka</module>
+        <module>gateway</module>
+        <module>config</module>
+        <module>auth</module>
     </modules>
 
     <!-- '<packaging>pom</packaging>'指定了Maven项目的打包类型。在这种情况下，'pom'代表“Project Object Model”，表明Maven项目是一个父项目或聚合项目。 -->

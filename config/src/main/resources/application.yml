@@ -1,0 +1,23 @@
+# Tomcat
+server:
+  port: 19002
+
+# Spring
+spring:
+  application:
+    # 应用名称
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@gitee.com:apgblogs/springCloudStudyConfig.git
+# 配置注册中心
+# Eureka配置，服务注册到哪里
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url:
+      defaultZone: http://localhost:19000/eureka
+  instance:
+    instance-id:  ${spring.application.name}:${server.port}
+    prefer-ip-address: true     #访问路径可以显示IP地址
