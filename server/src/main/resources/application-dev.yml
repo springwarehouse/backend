@@ -41,5 +41,5 @@ jackson:
 
 logging:
   level:
-    com.example.demo.server: debug
+    com.example.server: debug
     #druid.sql: debug
