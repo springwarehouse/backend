@@ -1,6 +1,6 @@
 # Tomcat 启动时提供的端口号
 server:
-  port: 19003
+  port: 19002
 
 # 配置注册中心,服务注册到哪里
 eureka:
@@ -20,4 +20,13 @@ eureka:
 spring:
   application:
     # 应用名称
-    name: auth
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@gitee.com:apgblogs/springCloudStudyConfig.git
+
+# 日志配置
+logging:
+  config: classpath:logback-spring.xml
