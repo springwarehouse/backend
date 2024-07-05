@@ -25,7 +25,7 @@ spring:
     config:
       server:
         git:
-          uri: git@gitee.com:apgblogs/springCloudStudyConfig.git
+          uri: git@gitee.com:iced-coca-cola/spring-cloud-config.git
 
 # 日志配置
 logging:
