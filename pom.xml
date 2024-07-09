@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <!-- 添加子工程 -->
     <modules>
-        <module>server</module>
         <module>cloud-gateway</module>
         <module>cloud-eureka</module>
         <module>cloud-config</module>

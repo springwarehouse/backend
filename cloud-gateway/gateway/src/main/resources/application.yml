@@ -1,3 +1,11 @@
 spring:
   profiles:
     active: dev
+
+oauth2:
+  cloud:
+    sys:
+      parameter:
+        ignoreUrls:
+        - /oauth/token
+        - /oauth/authorize
