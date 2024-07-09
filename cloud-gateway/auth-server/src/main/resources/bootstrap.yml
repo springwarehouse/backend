@@ -1,0 +1,22 @@
+# Tomcat 启动时提供的端口号
+server:
+  port: 19003
+
+# Spring 配置
+spring:
+  application:
+    name: auth-server
+
+# 配置注册中心,服务注册到哪里
+eureka:
+  # 客户端设置
+  client:
+    # 注册中心地址
+    service-url:
+      defaultZone: http://localhost:19000/eureka
+  # 实例设置
+  instance:
+    # 服务的唯一ID
+    instance-id:  ${spring.application.name}:${server.port}
+    # 注册服务时候可以使用IP地址
+    prefer-ip-address: true

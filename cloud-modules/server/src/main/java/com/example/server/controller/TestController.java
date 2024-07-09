@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/provider")
 public class TestController {
     @Data
     public static class ReqVO {
@@ -26,5 +26,15 @@ public class TestController {
     public Result<String> onSendData(@RequestBody ReqVO req) {
         EventBusCenter.post(new ReceiveMessage(req.getId(),req.getMessage()));
         return Result.success("ok");
+    }
+
+    @PostMapping("/test1")
+    public Result<String> test1() {
+        return Result.success("test1");
+    }
+
+    @PostMapping("/test2")
+    public Result<String> test2() {
+        return Result.success("test2");
     }
 }
