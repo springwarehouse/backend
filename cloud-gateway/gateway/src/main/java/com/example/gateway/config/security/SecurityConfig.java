@@ -53,7 +53,7 @@ public class SecurityConfig {
     private final ReactiveAuthenticationManager tokenAuthenticationManager;
 
 
-    private CorsFilter corsFilter;
+    private final CorsFilter corsFilter;
 
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception{

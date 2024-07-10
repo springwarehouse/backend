@@ -29,24 +29,26 @@ spring:
        discovery:
          locator:
            enable: true # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
-       # 配置auth路由规则
+       # 配置路由规则
        routes:
-       # auth 模块
-       - id: auth-server
-           uri: lb://auth-server
-           predicates:
-           ## Path Route Predicate Factory断言
-           - Path=/oauth/**
-        # server 模块
-        - id: server # 路由的ID，没有固定规则，但唯一要求，建议配合服务名
-          uri: lb://server #匹配后提供服务的路由地址-------这里用的动态路由格式统一为 lb://注册进eureka服务中心的名字
-          # 断言,进行拦截判断 - 表示集合,可匹配置多个
-          predicates:
-            # 请求url规则
-            - Path=/provider/** #断言，路径相匹配的进行路由--------断言也就是匹配方式，当识别到/api/customer/**时就会跳转上面的uri
-          # 过滤,这个必须写
-          filters:
-            - StripPrefix=1 # 忽略Path配置的个数，此处为1代表访问/api/customer/**时，会将api忽略，真实的访问地址为lb://auth/customer/**,如果为2，则为lb://auth/**
+          # auth 模块
+          - id: auth-server
+            uri: lb://auth-server
+            predicates:
+              # Path Route Predicate Factory断言
+              - Path=/oauth/**
+            filters:
+            - StripPrefix=0
+          # server 模块
+          - id: server # 路由的ID，没有固定规则，但唯一要求，建议配合服务名
+            uri: lb://server #匹配后提供服务的路由地址-------这里用的动态路由格式统一为 lb://注册进eureka服务中心的名字
+            # 断言,进行拦截判断 - 表示集合,可匹配置多个
+            predicates:
+              # 请求url规则
+              - Path=/provider/** #断言，路径相匹配的进行路由--------断言也就是匹配方式，当识别到/api/customer/**时就会跳转上面的uri
+            # 过滤,这个必须写
+            filters:
+              - StripPrefix=0 # 忽略Path配置的个数，此处为1代表访问/api/provider/**时，会将api忽略，真实的访问地址为lb://provider/**
   # redis 配置
   redis:
     # 地址

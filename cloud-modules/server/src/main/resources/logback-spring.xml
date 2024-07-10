@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <!-- 应用名称 -->
+    <property name="APP_NAME" value="server" />
     <!-- 日志文件路径, 可以通过 java 参数 -DLOG_PATH 覆盖 -->
-    <property name="LOG_DIR" value="${LOG_PATH:-logs}"/>
+    <property name="LOG_DIR" value="${LOG_PATH:-logs}/${APP_NAME}"/>
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
 
     <!-- 控制台 Appender -->
