@@ -7,5 +7,5 @@ oauth2:
     sys:
       parameter:
         ignoreUrls:
-        - /oauth/token
-        - /oauth/authorize
+          - /oauth/token
+          - /oauth/authorize
