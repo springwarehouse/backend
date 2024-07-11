@@ -45,7 +45,7 @@ spring:
             # 断言,进行拦截判断 - 表示集合,可匹配置多个
             predicates:
               # 请求url规则
-              - Path=/provider/** #断言，路径相匹配的进行路由--------断言也就是匹配方式，当识别到/api/customer/**时就会跳转上面的uri
+              - Path=/provider/** #断言，路径相匹配的进行路由--------断言也就是匹配方式，当识别到/provider/**时就会跳转上面的uri
             # 过滤,这个必须写
             filters:
               - StripPrefix=0 # 忽略Path配置的个数，此处为1代表访问/api/provider/**时，会将api忽略，真实的访问地址为lb://provider/**

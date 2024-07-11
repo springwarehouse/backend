@@ -32,8 +32,9 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
                 .cast(BearerTokenAuthenticationToken.class)
                 .map(BearerTokenAuthenticationToken::getToken)
                 .flatMap((accessToken -> {
+                    // 解析令牌
                     OAuth2AccessToken oAuth2AccessToken = this.tokenStore.readAccessToken(accessToken);
-                    //根据access_token从数据库获取不到OAuth2AccessToken
+                    //根据access_token从数据库获取不到OAuth2AccessToken, 抛出异常
                     if (oAuth2AccessToken == null) {
                         return Mono.error(new InvalidTokenException("无效的token！"));
                     } else if (oAuth2AccessToken.isExpired()) {
