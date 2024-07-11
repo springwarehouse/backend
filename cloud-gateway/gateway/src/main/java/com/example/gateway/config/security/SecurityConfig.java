@@ -20,7 +20,7 @@ import org.springframework.security.web.server.authorization.AuthorizationContex
 
 /**
  * 网关的OAuth2.0资源的配置类
- * 由于spring cldou gateway使用的Flux，因此需要使用@EnableWebFluxSecurity注解开启，而不是平常的web应用了
+ * 由于spring cloud gateway使用的Flux，因此需要使用@EnableWebFluxSecurity注解开启，而不是平常的web应用了
  */
 @RequiredArgsConstructor
 @Configuration

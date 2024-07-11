@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCo
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 /**
  * 授权服务的配置类
@@ -40,6 +41,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      * Security的认证管理器，密码模式需要用到
      */
     private final AuthenticationManager authenticationManager;
+
+    private final JwtAccessTokenConverter jwtAccessTokenConverter;
 
     /**
      * 配置客户端详情,比如密钥,唯一id,并不是所有的客户端都能接入授权服务
@@ -81,6 +84,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         services.setAccessTokenValiditySeconds(60 * 60 * 2);
         //refresh_token的过期时间
         services.setRefreshTokenValiditySeconds(60 * 60 * 24 * 3);
+
+        //设置令牌增强，使用JwtAccessTokenConverter进行转换
+        services.setTokenEnhancer(jwtAccessTokenConverter);
         return services;
     }
 

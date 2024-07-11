@@ -74,6 +74,7 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
         try {
             //解析token，使用tokenStore
             oAuth2AccessToken = tokenStore.readAccessToken(token);
+            // 令牌关键信息都在其中
             Map<String, Object> additionalInformation = oAuth2AccessToken.getAdditionalInformation();
             //令牌的唯一ID
             String jti=additionalInformation.get(TokenConstant.JTI).toString();
