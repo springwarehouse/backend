@@ -11,9 +11,11 @@ eureka:
   # 服务端设置
   server:
     # 关闭自我保护, 服务关闭后从列表中剔除, 默认true, 开启自我保护
-    enable-self-preservation: false
+    enable-self-preservation: true
     # 清理间隔(单位毫秒, 默认60*1000)
     eviction-interval-timer-in-ms: 60000
+    # eureka server: 在运行期间会去统计心跳失败比例在15分钟之内是否低于85%
+    renewal-percent-threshold: 0.85 # 默认0.85 指定自我保护机制的开启阈值
   # 客户端设置
   client:
     # 由于是注册中心服务端，所以设置为false，代表不向注册中心注册自己（注册中心集群时开启）
@@ -29,7 +31,7 @@ eureka:
 spring:
   application:
     # 应用名称
-    name: eureka
+    name: cloud-eureka
 
 # 日志配置
 logging:
