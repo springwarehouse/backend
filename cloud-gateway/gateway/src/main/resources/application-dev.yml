@@ -23,7 +23,7 @@ spring:
     allow-bean-definition-overriding: true
   application:
     # 应用名称
-    name: gateway
+    name: cloud-gateway
   cloud:
      gateway:
        discovery:

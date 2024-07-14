@@ -12,7 +12,7 @@ eureka:
   # 实例设置
   instance:
     # 服务的唯一ID
-    instance-id:  ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${server.port}
     # 注册服务时候可以使用IP地址
     prefer-ip-address: true
 
@@ -20,12 +20,41 @@ eureka:
 spring:
   application:
     # 应用名称
-    name: config
+    name: cloud-config
   cloud:
     config:
       server:
         git:
-          uri: git@gitee.com:iced-coca-cola/spring-cloud-config.git
+          uri: https://gitee.com/iced-coca-cola/spring-cloud-config.git
+  # 配置 admin 服务地址
+  boot:
+    admin:
+      client:
+        url: http://localhost:19001
+        instance:
+          # 基于IP地址向服务器注册, 默认域名注册
+          prefer-ip: true
+        register-once: false
+
+management:
+  #开启所有端点
+  endpoints:
+    # 开启所有监控端点
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    # 开启shutdown端口 调用关闭服务
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+      enabled: true
+    info:
+      enabled: false
+    metrics:
+      enabled: true
 
 # 日志配置
 logging:
