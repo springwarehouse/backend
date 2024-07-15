@@ -9,6 +9,8 @@ eureka:
     # 注册中心地址
     service-url:
       defaultZone: http://localhost:19000/eureka
+      # 设置拉取服务信息的间隔, 单位是毫秒
+    registry-fetch-interval-seconds: 30
   # 实例设置
   instance:
     # 服务的唯一ID
@@ -21,6 +23,19 @@ spring:
   application:
     # 应用名称
     name: cloud-admin
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        # 配置需要暴露出去的端点, 一般直接*暴露全部就行
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
 
 # 日志配置
 logging:
