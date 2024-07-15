@@ -1,6 +1,6 @@
 # Tomcat 启动时提供的端口号
 server:
-  port: 19001
+  port: 19004
 
 # 配置注册中心,服务注册到哪里
 eureka:
@@ -63,6 +63,26 @@ spring:
         max-idle: 300
         max-wait: 15000ms
         min-idle: 10
+
+management:
+  #开启所有端点
+  endpoints:
+    # 开启所有监控端点
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    # 开启shutdown端口 调用关闭服务
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+      enabled: true
+    info:
+      enabled: false
+    metrics:
+      enabled: true
 
 # 日志配置
 logging:

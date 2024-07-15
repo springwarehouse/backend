@@ -1,6 +1,6 @@
 # Tomcat 启动时提供的端口号
 server:
-  port: 19002
+  port: 19003
 
 # 配置注册中心,服务注册到哪里
 eureka:
@@ -20,12 +20,24 @@ eureka:
 spring:
   application:
     # 应用名称
-    name: cloud-config
-  cloud:
-    config:
-      server:
-        git:
-          uri: https://gitee.com/iced-coca-cola/spring-cloud-config.git
+    name: auth-server
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.100.10:3306/cloud-example?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+      username: root
+      password: ~Yes1123~
+      validation-query: SELECT 1 FROM DUAL
+
+# mybatis plus配置
+mybatis-plus:
+  # xml文件路径
+  mapper-locations: classpath:mapper/*.xml
+  # 实体类路径
+  type-aliases-package: com.example.common.data.dataobject
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      table-underline: true
 
 management:
   #开启所有端点
@@ -36,11 +48,11 @@ management:
       exposure:
         include: '*'
   endpoint:
-    health:
-      show-details: always
-      enabled: true
     # 开启shutdown端口 调用关闭服务
     shutdown:
+      enabled: true
+    health:
+      show-details: always
       enabled: true
     info:
       enabled: false

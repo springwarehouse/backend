@@ -55,7 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // TODO 允许表单登录
-        http.authorizeRequests()
+        http.authorizeRequests() // 认证配置
+                .antMatchers("/actuator/**").permitAll() // 允许Spring Boot Admin的Actuator端点
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

@@ -3,7 +3,6 @@ package com.example.common.model;
 import lombok.Data;
 
 /**
- * @author 公众号 ：码猿技术专栏
  * JWT令牌相关的信息实体类
  */
 @Data
