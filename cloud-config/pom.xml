@@ -16,12 +16,15 @@
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
+    <!-- 在 Maven 多模块项目中，子工程可以通过 <properties> 元素继承或覆盖父工程中定义的属性。 -->
+    <!-- 这使得您可以在父工程中定义一组共享的属性，然后在子工程中根据需要进行修改或补充。 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
+    <!-- 在 Maven 多模块项目中，子工程可以通过 <dependencies> 元素声明自己的依赖项，这些依赖项可以是项目独立需要的库，也可以是父工程中定义的依赖项的延伸或修改。 -->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -29,7 +32,7 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-        <!-- config service统一配置中心 -->
+        <!-- 统一配置中心服务端 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-server</artifactId>
@@ -45,7 +48,22 @@
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>2.4.1</version>
         </dependency>
-        <!-- 暴露端口, 用于检查服务 -->
+        <!-- Bus消息总线 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-bus</artifactId>
+        </dependency>
+        <!-- bus整合kafka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-kafka</artifactId>
+        </dependency>
+        <!-- 消息驱动 整合kafka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+        </dependency>
+        <!-- 程序监控器(暴露端口, 用于检查服务) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

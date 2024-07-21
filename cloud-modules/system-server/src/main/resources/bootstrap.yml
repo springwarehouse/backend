@@ -1,0 +1,53 @@
+# Tomcat 启动时提供的端口号
+server:
+  port: 19300
+
+# 配置注册中心,服务注册到哪里
+eureka:
+  # 客户端设置
+  client:
+    # 注册中心地址
+    service-url:
+      defaultZone: http://localhost:19000/eureka
+  # 实例设置
+  instance:
+    # 服务的唯一ID
+    instance-id: ${spring.application.name}:${server.port}
+    # 注册服务时候可以使用IP地址
+    prefer-ip-address: true
+
+spring:
+  application:
+    # 应用名称
+    name: system-server
+  cloud:
+    config:
+      label: master
+      profile: dev
+      discovery:
+        enabled: true
+        service-id: cloud-config
+    bus:
+      refresh:
+        enabled: true
+    stream:
+      kafka:
+        binder:
+          brokers: 192.168.100.10
+          defaultBrokerPort: 9092
+          zkNodes: 192.168.100.10
+          defaultZkPort: 2181
+
+# 程序监控器配置
+management:
+  endpoints:
+    web:
+      exposure:
+        # 这个配置项用于指定哪些端点应该被暴露出来。默认情况下，它的值是*，表示所有的端点都会被暴露出来
+        include: '*'
+
+# 日志配置
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org.apache.kafka: WARN

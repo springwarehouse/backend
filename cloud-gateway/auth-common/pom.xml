@@ -16,12 +16,15 @@
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
+    <!-- 在 Maven 多模块项目中，子工程可以通过 <properties> 元素继承或覆盖父工程中定义的属性。 -->
+    <!-- 这使得您可以在父工程中定义一组共享的属性，然后在子工程中根据需要进行修改或补充。 -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
+    <!-- 在 Maven 多模块项目中，子工程可以通过 <dependencies> 元素声明自己的依赖项，这些依赖项可以是项目独立需要的库，也可以是父工程中定义的依赖项的延伸或修改。 -->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
