@@ -26,21 +26,33 @@ spring:
       server:
         git:
           uri: https://gitee.com/iced-coca-cola/spring-cloud-config.git
+    bus:
+      refresh:
+        enabled: true
+    stream:
+      kafka:
+        binder:
+          brokers: 192.168.100.10  #kafka brokers地址，这里的地址为本人安装了Kafka的虚拟机地址
+          defaultBrokerPort: 9092  #kafka brokers端口
+          zkNodes: 192.168.100.10 #默认为本地，这里配置为安装了zookeeper的虚拟机地址
+          defaultZkPort: 2181 #zookeeper端口
 
 management:
-  #开启所有端点
   endpoints:
     # 开启所有监控端点
     enabled-by-default: true
     web:
       exposure:
+        # 这个配置项用于指定哪些端点应该被暴露出来。默认情况下，它的值是*，表示所有的端点都会被暴露出来
         include: '*'
   endpoint:
     health:
-      show-details: always
+      # 开启健康端点
       enabled: true
-    # 开启shutdown端口 调用关闭服务
+      # 应用健康信息
+      show-details: always
     shutdown:
+      # 开启shutdown端口 调用关闭服务
       enabled: true
     info:
       enabled: false
@@ -50,3 +62,6 @@ management:
 # 日志配置
 logging:
   config: classpath:logback-spring.xml
+  level:
+    # kafka日志只显示警告信息
+    org.apache.kafka: WARN

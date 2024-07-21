@@ -2,6 +2,7 @@ spring:
   profiles:
     active: dev
 
+# 白名单
 oauth2:
   cloud:
     sys:
